@@ -13,7 +13,7 @@
         }
 
         /* Full-width and full-height background video */
-		video.background-video {
+		video#background-video {
 			position: absolute;
 			top: 0;
 			left: 0;
@@ -27,11 +27,35 @@
 <body>
 
     <!-- Background video element -->
-    <video class="background-video" autoplay muted loop>
-        <source src="output.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
+	<video autoplay muted loop id="background-video">
+	  <!-- Default source, can be changed by JS based on browser -->
+	  <source id="video-source" type="video/mp4">
+	  <!-- Fallback image -->
+	  <img src="background.webp" alt="Fallback image">
+	</video>
 
+<script>
+  // Detect browser and set appropriate video source
+  var videoElement = document.getElementById('background-video');
+  var videoSource = document.getElementById('video-source');
+  
+  // Function to detect Safari
+  function isSafari() {
+    var userAgent = navigator.userAgent.toLowerCase();
+    return /safari/.test(userAgent) && !/chrome/.test(userAgent);
+  }
+
+  if (isSafari()) {
+    // Set source for Safari (output_high.mp4)
+    videoSource.src = "output_high.mp4";
+  } else {
+    // Set source for other browsers (output_baseline.mp4)
+    videoSource.src = "output_baseline.mp4";
+  }
+
+  // Reload the video element to apply the new source
+  videoElement.load();
+</script>
 
 </body>
 </html>
